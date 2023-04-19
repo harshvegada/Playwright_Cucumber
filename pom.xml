@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>TC_Java_Playwright</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <lombok>1.18.22</lombok>
+        <junit>4.13.2</junit>
+        <playwright>1.26.0</playwright>
+        <maven-compiler>3.7.0</maven-compiler>
+        <maven.surefire.plugin.version>2.19</maven.surefire.plugin.version>
+        <java-version>1.8</java-version>
+        <cucumber.version>5.7.0</cucumber.version>
+        <!--        <cucumber.version>1.2.5</cucumber.version>-->
+        <allure.cucumber5.version>2.14.0</allure.cucumber5.version>
+        <aspectj.version>1.9.6</aspectj.version>
+        <allure.maven.version>2.10.0</allure.maven.version>
+    </properties>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber5-jvm</artifactId>
+            <version>${allure.cucumber5.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-core</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler}</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <forkCount>1</forkCount>
+                    <rerunFailingTestsCount>1</rerunFailingTestsCount>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dcucumber.options="--plugin io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm"
+                    </argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.maven.version}</version>
+                <configuration>
+                    <reportVersion>${allure.maven.version}</reportVersion>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.temyers</groupId>
+                <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+                <version>5.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generateRunners</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generateRunners</goal>
+                        </goals>
+                        <configuration>
+                            <glue>steps</glue>
+                            <!-- These are optional, with the default values -->
+                            <!-- Where to output the generated tests -->
+                            <outputDirectory>${project.build.directory}/generated-test-sources/cucumber
+                            </outputDirectory>
+                            <!-- The directory, which must be in the root of the runtime classpath, containing your feature files.  -->
+                            <featuresDirectory>src/test/resources/featureFiles</featuresDirectory>
+                            <!-- Directory where the cucumber report files shall be written  -->
+                            <cucumberOutputDir>target/cucumber-parallel</cucumberOutputDir>
+                            <!-- List of cucumber plugins. When none are provided the json formatter is used. For more
+                                 advanced usage see section about configuring cucumber plugins -->
+                            <monochrome>true</monochrome>
+                            <tags>@HomePage</tags>
+                            <!-- Generate TestNG runners instead of JUnit ones. -->
+                            <useTestNG>false</useTestNG>
+                            <!-- The naming scheme to use for the generated test classes.  One of ['simple', 'feature-title', 'pattern'] -->
+                            <namingScheme>simple</namingScheme>
+                            <!-- The class naming pattern to use.  Only required/used if naming scheme is 'pattern'.-->
+                            <namingPattern>Parallel{c}IT</namingPattern>
+                            <!-- One of [SCENARIO, FEATURE]. SCENARIO generates one runner per scenario.  FEATURE generates a runner per feature. -->
+                            <parallelScheme>SCENARIO</parallelScheme>
+                            <!-- Specify a custom template for the generated sources (this is a path relative to the project base directory) -->
+                            <customVmTemplate>src/test/resources/cucumber-custom-runner.vm</customVmTemplate>
+                            <!-- Specify a custom package name for generated sources. Default is no package.-->
+                            <packageName>com.runner</packageName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

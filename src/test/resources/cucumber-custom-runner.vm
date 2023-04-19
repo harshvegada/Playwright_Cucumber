@@ -1,0 +1,20 @@
+#parse("/array.java.vm")
+#if ($packageName)
+package $packageName;
+
+#end##
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = {"$featureFile"},
+        plugin = #stringArray($plugins),
+        monochrome = $monochrome,
+#if(!$featureFile.contains(".feature:") && $tags)
+        tags = #stringArray($tags),
+#end
+        glue = #stringArray($glue))
+public class $className {
+}
