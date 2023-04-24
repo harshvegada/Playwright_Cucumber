@@ -8,7 +8,7 @@ pipeline {
 
   tools {
     jdk 'JAVA_HOME'
-    git 'Git'
+    git 'GIT'
     allure 'ALLURE_HOME'
     maven 'MAVEN_HOME'
   }
@@ -36,6 +36,7 @@ pipeline {
         }
       }
     }
+
     stage('Checkout') {
       steps {
         echo "Checkout: ${params.PT_BRANCH}"
@@ -43,30 +44,31 @@ pipeline {
       }
     }
 
+
     stage('Clean Target') {
       steps {
-        sh 'echo "Cleaning tager folder"'
-        sh 'mvn clean'
+        bat 'echo "Cleaning tager folder"'
+        bat 'mvn clean'
       }
     }
 
     stage('Building') {
       steps {
-        sh 'echo "Building source code"'
-        sh 'mvn compile'
+        bat 'echo "Building source code"'
+        bat 'mvn compile'
       }
     }
 
     stage('Testing') {
       steps {
-        sh 'echo "Running Test cases source code"'
-        sh 'mvn test -Dtags=$tags'
+        bat 'echo "Running Test cases source code"'
+        bat 'mvn test -Dtags=$tags'
       }
     }
 
     stage('Mail') {
       steps {
-        sh 'echo "Dropping email to audience"'
+        bat 'echo "Dropping email to audience"'
       }
     }
   }
