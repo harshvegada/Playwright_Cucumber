@@ -44,11 +44,6 @@ pipeline {
       }
     }
 
-    stage('sh how to') {
-        steps {
-            bat 'ls -l'
-        }
-    }
 
     stage('Clean Target') {
       steps {
