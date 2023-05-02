@@ -69,6 +69,7 @@ pipeline {
     stage('Mail') {
       steps {
         bat 'echo "Dropping email to audience"'
+        emailext body: '', subject: '$JOB_NAME - $EXECUTOR_NUMBER - $BUILD_NUMBER', to: 'harshvegada1997@gmail.com'
       }
     }
   }
