@@ -13,10 +13,7 @@ pipeline {
     maven 'MAVEN_HOME'
   }
 
-  triggers {
-    pollSCM('* 1 * 1 *')
-  }
-
+  
   parameters {
     booleanParam defaultValue: false, description: 'If you want clean report', name: 'wantToCopyResultFromPreviousBuild'
     choice choices: ['chrome', 'firefox', 'ie'], description: 'select browser', name: 'browser'
@@ -37,12 +34,12 @@ pipeline {
       }
     }
 
-    stage('Checkout') {
-      steps {
-        echo "Checkout: ${params.PT_BRANCH}"
-        git changelog: false, credentialsId: '36de9ea3-0d13-4f2a-aef1-4748c8333f2b', url: 'https://github.com/harshvegada/Playwright_Cucumber.git'
-      }
-    }
+ stage('Checkout') {
+       steps {
+         echo "Checkout: ${params.GIT_BRANCH}"
+         git branch: params.GIT_BRANCH, credentialsId: '36de9ea3-0d13-4f2a-aef1-4748c8333f2b', url: 'https://github.com/harshvegada/Playwright_Cucumber.git'
+       }
+     }
 
 
     stage('Clean Target') {
@@ -69,7 +66,7 @@ pipeline {
     stage('Mail') {
       steps {
         bat 'echo "Dropping email to audience"'
-        emailext body: '', subject: '$JOB_NAME - $EXECUTOR_NUMBER - $BUILD_NUMBER', to: 'harshvegada1997@gmail.com'
+        emailext body: 'The passing rate for this job is ${currentBuild.getBuildStatusSummary().getPercentComplete()}%.', subject: 'Job ${currentBuild.currentResult} - ${env.JOB_NAME} - Build # ${currentBuild.number}', to: 'harshvegada1997@gmail.com'
       }
     }
   }
