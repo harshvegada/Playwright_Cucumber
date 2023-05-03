@@ -151,7 +151,7 @@
                             <!-- List of cucumber plugins. When none are provided the json formatter is used. For more
                                  advanced usage see section about configuring cucumber plugins -->
                             <monochrome>true</monochrome>
-                            <tags>@HomePage</tags>
+                            <tags>@scroll</tags>
                             <!-- Generate TestNG runners instead of JUnit ones. -->
                             <useTestNG>false</useTestNG>
                             <!-- The naming scheme to use for the generated test classes.  One of ['simple', 'feature-title', 'pattern'] -->
