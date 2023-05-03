@@ -12,7 +12,6 @@ pipeline {
     allure 'ALLURE_HOME'
     maven 'MAVEN_HOME'
   }
-
   
   parameters {
     booleanParam defaultValue: false, description: 'If you want clean report', name: 'wantToCopyResultFromPreviousBuild'
@@ -20,14 +19,13 @@ pipeline {
     string defaultValue: '@scroll', description: 'select tag & it will trigger', name: 'tags', trim: true
     string defaultValue: 'master', description: 'select git branch', name: 'GIT_BRANCH', trim: true
     choice choices: ['QA', 'PROD', 'STAGE'], description: 'select Env', name: 'Env'
-    string name: 'BRANCH', defaultValue: 'master', description: 'Git branch to build'
   }
 
   stages {
     stage('Display on UI') {
       steps {
         script {
-          currentBuild.description = 'Branch: ' + params.BRANCH
+          currentBuild.description = 'Branch: ' + params.GIT_BRANCH
           currentBuild.description += '\nEnv: ' + params.Env
           currentBuild.description += '\nTags: ' + params.tags
         }
