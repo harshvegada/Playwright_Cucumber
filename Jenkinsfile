@@ -9,7 +9,6 @@ pipeline {
   tools {
     jdk 'JAVA_HOME'
     git 'GIT'
-    allure 'ALLURE_HOME'
     maven 'MAVEN_HOME'
   }
   
