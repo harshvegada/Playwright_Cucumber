@@ -41,22 +41,22 @@ pipeline {
 
     stage('Clean Target') {
       steps {
-        bat 'echo "Cleaning tager folder"'
-        bat 'mvn clean'
+        sh 'echo "Cleaning tager folder"'
+        sh 'mvn clean'
       }
     }
 
     stage('Building') {
       steps {
-        bat 'echo "Building source code"'
-        bat 'mvn compile'
+        sh 'echo "Building source code"'
+        sh 'mvn compile'
       }
     }
 
     stage('Testing') {
       steps {
-        bat 'echo "Running Test cases source code"'
-        bat 'mvn test -Dtags=$tags'
+        sh 'echo "Running Test cases source code"'
+        sh 'mvn test -Dtags=$tags'
       }
     }
   }
