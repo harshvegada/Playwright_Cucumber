@@ -60,12 +60,5 @@ pipeline {
         bat 'mvn test -Dtags=$tags'
       }
     }
-
-    stage('Mail') {
-      steps {
-        bat 'echo "Dropping email to audience"'
-        emailext body: 'The passing rate for this job is ${currentBuild.getBuildStatusSummary().getPercentComplete()}%.', subject: 'Job ${currentBuild.currentResult} - ${env.JOB_NAME} - Build # ${currentBuild.number}', to: 'harshvegada1997@gmail.com'
-      }
-    }
   }
 }
