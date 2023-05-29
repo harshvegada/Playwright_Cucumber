@@ -18,8 +18,10 @@ public class PredefinedActions {
     protected static Page page;
 
     public static void startBrowser(String browserName, String env) {
+        Map<String, String> env = new HashMap<>();
+        env.put("SELENIUM_REMOTE_URL", "http://16.170.205.102:4444");
         List<String> cap = Arrays.asList("--start-maximized");
-        Browser browser = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(cap).setChannel("chrome"));
+        Browser browser = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setChannel("chrome").setEnv(env));
         BrowserContext browserContext = browser.newContext();
         page = browserContext.newPage();
         page.navigate("https://www.amazon.in/");
