@@ -6,11 +6,7 @@ pipeline {
     timestamps()
   }
 
-  tools {
-    jdk 'JAVA_HOME'
-    git 'GIT'
-    maven 'MAVEN_HOME'
-  }
+  
   
   parameters {
     booleanParam defaultValue: false, description: 'If you want clean report', name: 'wantToCopyResultFromPreviousBuild'
